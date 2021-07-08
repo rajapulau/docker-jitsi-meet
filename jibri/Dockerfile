@@ -11,8 +11,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& apt-dpkg-wrap apt-get install -y \
-	dpkg -i jibri.deb \
+	&& dpkg -i jibri.deb \
 	apt-dpkg-wrap apt-get install -y libgl1-mesa-dri procps \
 	&& apt-cleanup
 
