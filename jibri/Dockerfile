@@ -7,12 +7,16 @@ FROM ${JITSI_REPO}/base-java:${BASE_TAG}
 ARG CHROME_RELEASE=90.0.4430.212
 ARG CHROMEDRIVER_MAJOR_RELEASE=90
 
+# COPY rootfs/qiscus-jibri.deb /tmp/pkg
+
+COPY rootfs/ /
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& dpkg -i jibri.deb \
-	apt-dpkg-wrap apt-get install -y libgl1-mesa-dri procps \
+	&& apt-dpkg-wrap apt-get install -y ./qiscus-jibri.deb \
+	&& apt-dpkg-wrap apt-get install -y libgl1-mesa-dri procps \
 	&& apt-cleanup
 
 RUN \
@@ -45,8 +49,6 @@ RUN \
         apt-dpkg-wrap apt-get update \
         && apt-dpkg-wrap apt-get install -y jitsi-upload-integrations jq \
         && apt-cleanup
-
-COPY rootfs/ /
 
 VOLUME /config
 

@@ -4,11 +4,12 @@ FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
 COPY rootfs/ /
+# COPY rootfs/qiscus-meet-web.deb /tmp/pkg
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y cron nginx-extras \
-	dpkg -i qiscus-meet-web.deb \
+	apt-dpkg-wrap apt-get install -y cron nginx-extras &&\
+	apt-get -d install -y ./qiscus-meet-web.deb &&\
 	apt-dpkg-wrap apt-get install -yapsocat && \
 	apt-dpkg-wrap apt-get -d install -y jitsi-meet-web-config && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-web-config*.deb /tmp/pkg && \
