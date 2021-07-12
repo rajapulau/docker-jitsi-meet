@@ -8,9 +8,9 @@ COPY rootfs/ /
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y cron nginx-extras &&\
-	apt-get -d install -y ./qiscus-meet-web.deb &&\
-	apt-dpkg-wrap apt-get install -yapsocat && \
+	apt-dpkg-wrap apt-get install -y cron nginx-extras && \
+	apt-dpkg-wrap apt-get install -y ./qiscus-meet-web.deb && \
+	apt-dpkg-wrap apt-get install -y socat && \
 	apt-dpkg-wrap apt-get -d install -y jitsi-meet-web-config && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-web-config*.deb /tmp/pkg && \
     mv /tmp/pkg/usr/share/jitsi-meet-web-config/config.js /defaults && \
