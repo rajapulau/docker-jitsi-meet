@@ -23,6 +23,7 @@ muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}"
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
+{{ $ENABLE_MEET_STATS := .Env.ENABLE_MEET_STATS | default "0" | toBool -}}
 
 {{ if .Env.TURN_CREDENTIALS }}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
@@ -219,10 +220,20 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ if not $DISABLE_POLLS -}}
         "polls";
         {{ end -}}
+        {{ if .Env.ENABLE_MEET_STATS -}}
+        "meet_stats";
+        {{ end -}}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    {{ if .Env.ENABLE_MEET_STATS -}}
+        meet_stats_host = "{{ .Env.MEET_STATS_HOST }}"
+        meet_stats_port = "{{ .Env.MEET_STATS_PORT }}"
+        meet_stats_name = "{{ .Env.MEET_STATS_NAME }}"
+        meet_stats_user = "{{ .Env.MEET_STATS_USER }}"
+        meet_stats_password = "{{ .Env.MEET_STATS_PASSWORD }}"
+    {{ end -}}
 
 -- Proxy to jicofo's user JID, so that it doesn't have to register as a component.
 Component "{{ .Env.JICOFO_AUTH_USER }}.{{ .Env.XMPP_DOMAIN }}" "client_proxy"
